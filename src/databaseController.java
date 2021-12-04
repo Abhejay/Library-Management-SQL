@@ -396,6 +396,49 @@ public class databaseController {
             e.printStackTrace();
         }
     }
+    
+    public static void displayFines() {
+    	DefaultTableModel defaultTableModel = new DefaultTableModel();
+    	JFrame tableFrame = new JFrame();
+    	JTable table = new JTable(defaultTableModel);
+    	table.setPreferredScrollableViewportSize(new Dimension(300, 600));
+        table.setFillsViewportHeight(true);
+        
+        tableFrame.setSize(300, 600);
+        tableFrame.add(new JScrollPane(table));
+    	tableFrame.setVisible(true);
+    	
+        
+    	
+    	defaultTableModel.addColumn("Card_id");
+    	defaultTableModel.addColumn("Total_fines");
+    	
+    	try {
+    		Statement stmt = con.createStatement();
+    		String sql = "SELECT bl.Card_id, SUM(fi.Fine_amt) AS Total_fines "
+    				+ "FROM sys.FINES AS fi INNER JOIN sys.BOOK_LOANS as bl "
+    				+ "ON fi.Loan_id = bl.Loan_id "
+    				+ "GROUP BY bl.Card_id; ";
+    		ResultSet rs = stmt.executeQuery(sql);
+    		
+    		while(rs.next()) {
+    			String card_id = rs.getString("Card_id");
+    			float total_fines = rs.getFloat("Total_fines");
+    			
+    			defaultTableModel.addRow(new Object[] {card_id, total_fines});
+    			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+    			centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+    			table.setDefaultRenderer(String.class, centerRenderer);
+    			tableFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                tableFrame.setVisible(true);
+                tableFrame.validate();
+    			
+    		}
+    	}
+    	catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    }
 
 
     //ADD YOU FUNCTIONS AND MAKE A CALL OF THIS IN THE CLASS YOU ARE IN
