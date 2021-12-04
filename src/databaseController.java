@@ -323,7 +323,7 @@ public class databaseController {
         else if(borrower.equals("")){
 
             rs=stmt.executeQuery("Select Loan_id,Isbn,Card_id from sys.BOOK_LOANS where Isbn='"+isbn+"' and Card_id='"+card+"' and Date_in is null;");
-            System.out.println(rs.getString("Card_id"));
+            
 
         }
         else if(isbn.equals("")){
