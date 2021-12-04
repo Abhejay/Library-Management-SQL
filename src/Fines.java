@@ -6,16 +6,10 @@ import java.awt.*;
 
 import java.sql.*;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.*;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
-
-import javax.swing.JButton;
-import javax.swing.JList;
 
 public class Fines extends JFrame{
 
@@ -27,7 +21,7 @@ public class Fines extends JFrame{
     private JTextField loanID;
     private JTextField amount;
     private JLabel paymentLabel;
-    private JLabel loanLabel;
+    private JLabel card_idLabel;
     private JLabel amountLabel;
 
 
@@ -58,9 +52,9 @@ public class Fines extends JFrame{
         paymentLabel.setBounds(40, 30, 180, 30);
         contentPane.add(paymentLabel);
 
-        loanLabel = new JLabel("Loan ID");
-        loanLabel.setBounds(42, 80, 150, 20);
-        contentPane.add(loanLabel);
+        card_idLabel = new JLabel("Card ID");
+        card_idLabel.setBounds(42, 80, 150, 20);
+        contentPane.add(card_idLabel);
 
         loanID = new JTextField();
         loanID.setBounds(190, 80, 150, 25);
@@ -75,7 +69,7 @@ public class Fines extends JFrame{
         contentPane.add(amount);
 
         btnPayment = new JButton("Pay Fine");
-        btnPayment.setBounds(35, 180, 120, 30);
+        btnPayment.setBounds(35, 170, 120, 30);
         contentPane.add(btnPayment);
         btnPayment.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -97,7 +91,7 @@ public class Fines extends JFrame{
         });
 
         btnUpdate = new JButton("Update Fines");
-        btnUpdate.setBounds(35, 230, 120, 30);
+        btnUpdate.setBounds(35, 200, 120, 30);
         contentPane.add(btnUpdate);
         btnUpdate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
