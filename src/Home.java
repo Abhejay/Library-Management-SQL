@@ -29,43 +29,43 @@ public class Home extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		textField = new JTextField();
 		textField.setBounds(99, 46, 310, 20);
 		contentPane.add(textField);
 		textField.setColumns(10);
-		
+
 		JButton btnSearch = new JButton("Search");
 		btnSearch.setBounds(10, 45, 89, 23);
 		contentPane.add(btnSearch);
-		btnSearch.addActionListener (new ActionListener() { 
-			  	public void actionPerformed(ActionEvent e) { 
-			  		if(!textField.getText().isEmpty()) {
-						try {
-							dispose();
-							databaseController db = new databaseController();
-							db.executeBookSearch(textField.getText());
-						} catch (Exception ex) {
-							ex.printStackTrace();
-						}
-			  		}
-				} 
+		btnSearch.addActionListener (new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(!textField.getText().isEmpty()) {
+					try {
+						dispose();
+						databaseController db = new databaseController();
+						db.executeBookSearch(textField.getText());
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					}
+				}
+			}
 		} );
 
-		
-		
+
+
 		JButton btnBorrower = new JButton("New Borrower");
 		btnBorrower.setBounds(78, 144, 131, 23);
 		contentPane.add(btnBorrower);
 		btnBorrower.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 				CreateBorrower b = new CreateBorrower();
 				b.setVisible(true);
 			}
 		});
-		
+
 		JButton btnCheckIn = new JButton("Check-In");
 		btnCheckIn.setBounds(232, 144, 131, 23);
 		contentPane.add(btnCheckIn);
@@ -76,10 +76,20 @@ public class Home extends JFrame {
 				c.setVisible(true);
 			}
 		});
-		
-		// Bounds may need work
+
+		JButton btnCheckOut = new JButton("Check-Out");
+		btnCheckOut.setBounds(78, 178, 131, 23);
+		contentPane.add(btnCheckOut);
+		btnCheckOut.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				CheckOut c = new CheckOut();
+				c.setVisible(true);
+			}
+		});
+
 		JButton btnFines = new JButton("Fines");
-		btnFines.setBounds(78, 170, 131, 23);
+		btnFines.setBounds(232, 178, 131, 23);
 		contentPane.add(btnFines);
 		btnFines.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
