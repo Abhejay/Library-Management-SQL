@@ -25,103 +25,90 @@ import java.sql.Connection;
 
 public class ViewCheckedInBooks extends JFrame
 {
-	JFrame mainFrame;
-	JPanel controlPanel;
+	JFrame frame;
+	JPanel contentPane;
 	static Connection conn=null;
-	int row=0;
-	
 	JTable table;
 	
 	ViewCheckedInBooks(String isbn, String card, String borrower) throws SQLException
 	{
-		prepareGUI(isbn,card,borrower);
-	}
-	
-	
-	void prepareGUI(String isbn, String card, String borrower) throws SQLException
-	{
-		mainFrame=new JFrame("Library Management System");
-		mainFrame.setSize(500,500);
-		//mainFrame.setBounds(100,100,1100,1000);
-		//mainFrame.setLayout(new GridLayout(2,1));
-		mainFrame.setLocation(20, 50);
-		//mainFrame.pack();
-		//mainFrame.setMinimumSize(mainFrame.getSize());
-		mainFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		frame=new JFrame("Library Management System");
+		frame.setSize(500,500);
+		frame.setLocation(20, 50);
+		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
+		contentPane=new JPanel();
+		contentPane.setBorder(new EmptyBorder(10,10,10,10));
+		setContentPane(contentPane);
+		
+		GridBagLayout gbc_contentPane=new GridBagLayout();
+		gbc_contentPane.columnWidths=new int[]{0,0};
+		gbc_contentPane.rowHeights = new int[]{0, 0, 0};
+		gbc_contentPane.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+		gbc_contentPane.rowWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
+		contentPane.setLayout(gbc_contentPane);
 		
 		
-		controlPanel=new JPanel();
-		controlPanel.setBorder(new EmptyBorder(10,10,10,10));
-		setContentPane(controlPanel);
-		GridBagLayout gbl_controlPanel=new GridBagLayout();
-		gbl_controlPanel.columnWidths=new int[]{0,0};
-		gbl_controlPanel.rowHeights = new int[]{0, 0, 0};
-		gbl_controlPanel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_controlPanel.rowWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
-		controlPanel.setLayout(gbl_controlPanel);
-		
-		JButton close= new JButton("Close");
-		close.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				mainFrame.setVisible(false); 
-				mainFrame.dispose();
-			}
-		});
-		
-		JLayeredPane layeredPane=new JLayeredPane();
-		GridBagConstraints gbc_layeredPane = new GridBagConstraints();
-		gbc_layeredPane.insets = new Insets(0, 0, 5, 0);
-		gbc_layeredPane.fill = GridBagConstraints.BOTH;
-		gbc_layeredPane.gridx = 0;
-		gbc_layeredPane.gridy = 0;
-		controlPanel.add(layeredPane, gbc_layeredPane);
+		JLayeredPane layer=new JLayeredPane();
+		GridBagConstraints gbc_layer = new GridBagConstraints();
+		gbc_layer.insets = new Insets(0, 0, 5, 0);
+		gbc_layer.fill = GridBagConstraints.BOTH;
+		gbc_layer.gridx = 0;
+		gbc_layer.gridy = 0;
+		contentPane.add(layer, gbc_layer);
 		
 		JScrollPane scrollPane=new JScrollPane();
 		scrollPane.setBounds(6,6,1200,600);
-		layeredPane.add(scrollPane);
+		layer.add(scrollPane);
 		
 		table=new JTable();
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setRowSelectionAllowed(true);
 		scrollPane.setViewportView(table);
-		databaseController db = new databaseController();
+		databaseController controller = new databaseController();
 
 		table.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent evnt)
 			{
 				if(evnt.getClickCount() ==1 || evnt.getClickCount()==2)
 				{
-					int loan_id=(int)table.getModel().getValueAt(table.rowAtPoint(evnt.getPoint()), 0);
 					//System.out.println(loan_id);
 					String date = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+					int loan_id=(int)table.getModel().getValueAt(table.rowAtPoint(evnt.getPoint()), 0);
 					try
 					{
-						db.checkIn(loan_id, date);
+						controller.checkIn(loan_id, date);
+						frame.setVisible(false);
 					}
 					catch(SQLException e)
 					{
-						System.out.println("Sql Error : "+e.getMessage());
-					} /*catch (ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}*/
+						System.out.println("ERROR: "+e.getMessage());
+					} 
 				}
 			}
 		});
 			
 		//Close Button
+		JButton close= new JButton("Close");
+		close.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.setVisible(false); 
+				frame.dispose();
+			}
+		});
+		
 		GridBagConstraints gbc_btnClose = new GridBagConstraints();
 		gbc_btnClose.fill=GridBagConstraints.HORIZONTAL;
 		gbc_btnClose.insets = new Insets(0, 0, 5, 0);
 		gbc_btnClose.gridx = 0;
 		gbc_btnClose.gridy = 2;
 		gbc_btnClose.anchor=GridBagConstraints.PAGE_END;
-		controlPanel.add(close, gbc_btnClose);		
+		contentPane.add(close, gbc_btnClose);		
 		try{		
 			
 			String[] columnNames = {"Loan_id", "Card_id", "Isbn"};
 			DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
-			ResultSet rs = db.checkInMethods(isbn, card, borrower);
+			ResultSet rs = controller.checkInMethods(isbn, card, borrower);
 			while(rs.next()) {
 				int loan_id = rs.getInt("Loan_id");
 				String card_id = rs.getString("Card_id");
@@ -141,12 +128,10 @@ public class ViewCheckedInBooks extends JFrame
 			}
 			catch(SQLException e)
 			{
-				System.out.println(e.getMessage());
+				System.out.println("ERROR: "+ e.getMessage());
 			}
 		
-		mainFrame.add(controlPanel);
-		mainFrame.setVisible(true);
-		
+		frame.add(contentPane);
+		frame.setVisible(true);
 	}
-	}
-
+}
