@@ -323,7 +323,7 @@ public class databaseController {
         else if(borrower.equals("")){
 
             rs=stmt.executeQuery("Select Loan_id,Isbn,Card_id from sys.BOOK_LOANS where Isbn='"+isbn+"' and Card_id='"+card+"' and Date_in is null;");
-            
+
 
         }
         else if(isbn.equals("")){
@@ -374,13 +374,13 @@ public class databaseController {
         }
     }
 
-     public static void enterPayment(String Card_id, float amount) {
+    public static void enterPayment(String Loan_id, float amount) {
         try {
             Statement stmt = con.createStatement();
 
             // Update Fine_amt of loan_id entered by user by amount entered by user only if the book has been returned
             String sql1 = "UPDATE sys.FINES AS fi SET Fine_amt = Fine_amt - '"+amount+"' "
-                    + "WHERE bl.Card_id = '"+Card_id+"' AND fi.Card_id = ( "
+                    + "WHERE fi.Loan_id = '"+Loan_id+"' AND fi.Loan_id = ( "
                     + "SELECT Loan_id "
                     + "FROM sys.BOOK_LOANS AS bl "
                     + "WHERE Date_in IS NOT NULL AND bl.Loan_id = fi.Loan_id);";
@@ -396,48 +396,47 @@ public class databaseController {
             e.printStackTrace();
         }
     }
-    
+
     public static void displayFines() {
-    	DefaultTableModel defaultTableModel = new DefaultTableModel();
-    	JFrame tableFrame = new JFrame();
-    	JTable table = new JTable(defaultTableModel);
-    	table.setPreferredScrollableViewportSize(new Dimension(300, 600));
+        DefaultTableModel defaultTableModel = new DefaultTableModel();
+        JFrame tableFrame = new JFrame();
+        JTable table = new JTable(defaultTableModel);
+        table.setPreferredScrollableViewportSize(new Dimension(300, 600));
         table.setFillsViewportHeight(true);
-        
+
         tableFrame.setSize(300, 600);
         tableFrame.add(new JScrollPane(table));
-    	tableFrame.setVisible(true);
-    	
-        
-    	
-    	defaultTableModel.addColumn("Card_id");
-    	defaultTableModel.addColumn("Total_fines");
-    	
-    	try {
-    		Statement stmt = con.createStatement();
-    		String sql = "SELECT bl.Card_id, SUM(fi.Fine_amt) AS Total_fines "
-    				+ "FROM sys.FINES AS fi INNER JOIN sys.BOOK_LOANS as bl "
-    				+ "ON fi.Loan_id = bl.Loan_id "
-    				+ "GROUP BY bl.Card_id; ";
-    		ResultSet rs = stmt.executeQuery(sql);
-    		
-    		while(rs.next()) {
-    			String card_id = rs.getString("Card_id");
-    			float total_fines = rs.getFloat("Total_fines");
-    			
-    			defaultTableModel.addRow(new Object[] {card_id, total_fines});
-    			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-    			centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-    			table.setDefaultRenderer(String.class, centerRenderer);
-    			tableFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        tableFrame.setVisible(true);
+
+
+
+        defaultTableModel.addColumn("Card_id");
+        defaultTableModel.addColumn("Total_fines");
+
+        try {
+            Statement stmt = con.createStatement();
+            String sql = "SELECT bl.Card_id, SUM(fi.Fine_amt) AS Total_fines "
+                    + "FROM sys.FINES AS fi INNER JOIN sys.BOOK_LOANS as bl "
+                    + "ON fi.Loan_id = bl.Loan_id "
+                    + "GROUP BY bl.Card_id; ";
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while(rs.next()) {
+                String card_id = rs.getString("Card_id");
+                float total_fines = rs.getFloat("Total_fines");
+
+                defaultTableModel.addRow(new Object[] {card_id, total_fines});
+                DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+                centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+                table.setDefaultRenderer(String.class, centerRenderer);
                 tableFrame.setVisible(true);
                 tableFrame.validate();
-    			
-    		}
-    	}
-    	catch(Exception e) {
-    		e.printStackTrace();
-    	}
+
+            }
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

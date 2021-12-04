@@ -183,7 +183,8 @@ public class CheckIn extends JFrame {
 		back.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				new GUI();
+				Home h = new Home();
+				h.setVisible(true);
 			}
 		});
 

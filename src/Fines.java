@@ -52,7 +52,7 @@ public class Fines extends JFrame{
         paymentLabel.setBounds(40, 30, 180, 30);
         contentPane.add(paymentLabel);
 
-        card_idLabel = new JLabel("Card ID");
+        card_idLabel = new JLabel("Loan ID");
         card_idLabel.setBounds(42, 80, 150, 20);
         contentPane.add(card_idLabel);
 
@@ -105,22 +105,22 @@ public class Fines extends JFrame{
                 }
             }
         });
-        
+
         btnDisplay = new JButton("Display Fines");
-		btnDisplay.setBounds(35, 230, 120, 30);
-		contentPane.add(btnDisplay);
-		btnDisplay.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					databaseController db = new databaseController();
-					db.displayFines();
-					
-				}
-				catch(Exception ex) {
-					ex.printStackTrace();
-				}
-			}
-		});
+        btnDisplay.setBounds(35, 230, 120, 30);
+        contentPane.add(btnDisplay);
+        btnDisplay.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    databaseController db = new databaseController();
+                    db.displayFines();
+
+                }
+                catch(Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
     }
 
 }
