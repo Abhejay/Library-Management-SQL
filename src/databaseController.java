@@ -374,13 +374,13 @@ public class databaseController {
         }
     }
 
-    public static void enterPayment(String Loan_id, float amount) {
+     public static void enterPayment(String Card_id, float amount) {
         try {
             Statement stmt = con.createStatement();
 
             // Update Fine_amt of loan_id entered by user by amount entered by user only if the book has been returned
             String sql1 = "UPDATE sys.FINES AS fi SET Fine_amt = Fine_amt - '"+amount+"' "
-                    + "WHERE fi.Loan_id = '"+Loan_id+"' AND fi.Loan_id = ( "
+                    + "WHERE bl.Card_id = '"+Card_id+"' AND fi.Card_id = ( "
                     + "SELECT Loan_id "
                     + "FROM sys.BOOK_LOANS AS bl "
                     + "WHERE Date_in IS NOT NULL AND bl.Loan_id = fi.Loan_id);";
