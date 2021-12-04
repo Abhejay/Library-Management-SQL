@@ -109,11 +109,11 @@ public class ViewCheckedInBooks extends JFrame
 
             String[] columnNames = {"Loan_id", "Card_id", "Isbn"};
             DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
-            ResultSet rs = controller.checkInMethods(isbn, card, borrower);
-            while(rs.next()) {
-                int loan_id = rs.getInt("Loan_id");
-                String card_id = rs.getString("Card_id");
-                String Isbn = rs.getString("Isbn");
+            ResultSet result = controller.checkInMethods(isbn, card, borrower);
+            while(result.next()) {
+                int loan_id = result.getInt("Loan_id");
+                String card_id = result.getString("Card_id");
+                String Isbn = result.getString("Isbn");
 
                 Object[] data = {loan_id, card_id, Isbn};
 
