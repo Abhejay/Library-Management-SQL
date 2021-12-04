@@ -15,9 +15,9 @@ https://github.com/Abhejay/Library-Management-SQL
 https://dev.mysql.com/downloads/connector/j/
 Choose "Platform Independent"
 
-3) Add the jar file to the classpath for the project
+3) Add the jar file to the classpath for the project (this needs to happen so that the program can access MySQL files)
 
 4) Make sure you have an internet connection so you can connect to AWS
 
-4) Run the file GUI.java to display the home screen for our tool
+5) Run the file GUI.java to display the home screen for our tool
 
