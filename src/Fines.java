@@ -23,6 +23,7 @@ public class Fines extends JFrame{
     private JButton btnUpdate;
     private JButton btnPayment;
     private JButton btnBack;
+    private JButton btnDisplay;
     private JTextField loanID;
     private JTextField amount;
     private JLabel paymentLabel;
@@ -34,7 +35,7 @@ public class Fines extends JFrame{
 
         setTitle("Fines");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(450, 350, 450, 300);
+        setBounds(100, 100, 450, 300);
         setVisible(true);
 
         contentPane = new JPanel();
@@ -86,6 +87,7 @@ public class Fines extends JFrame{
                     try {
                         databaseController db = new databaseController();
                         db.enterPayment(id, amountFloat);
+                        JOptionPane.showMessageDialog(null, "Payment processed");
                     }
                     catch (Exception ex) {
                         ex.printStackTrace();
@@ -102,12 +104,29 @@ public class Fines extends JFrame{
                 try {
                     databaseController db = new databaseController();
                     db.update();
+                    JOptionPane.showMessageDialog(null, "Fines updated");
                 }
                 catch (Exception ex) {
                     ex.printStackTrace();
                 }
             }
         });
+        
+        btnDisplay = new JButton("Display Fines");
+		btnDisplay.setBounds(35, 230, 120, 30);
+		contentPane.add(btnDisplay);
+		btnDisplay.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					databaseController db = new databaseController();
+					db.displayFines();
+					
+				}
+				catch(Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+		});
     }
 
 }
