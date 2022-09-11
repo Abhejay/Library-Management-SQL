@@ -1,4 +1,4 @@
-README for CS 4347.002 SQL Programming Project
+README SQL Programming Project
 by: Mansha Fatima, Jack Moody, Abhejay Murali, Advait Sankaramanchi, Matthew Au
 
 Dependencies Needed for this Project:
